@@ -27,7 +27,7 @@ public class Recipes {
         while(input.hasNextLine()){
             recipe += input.nextLine() + "\n";
         }
-        System.out.print(recipe);
+        addRecipe(recipe);
     }
 
     public void addRecipe(String recipe){
@@ -47,7 +47,7 @@ public class Recipes {
     public String toString(){
         String out = "";
         for(String[] str : recipes){
-            out += String.format("%s\n%s\n%s", str[0], str[1], str[2]);
+            out += String.format("%s%s%s", str[0], str[1], str[2]);
         }
         return out;
     }

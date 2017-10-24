@@ -8,11 +8,9 @@ public class Main {
 	// write your code here
         Recipes book = new Recipes("receitas.txt");
 
-
-
-
-
         System.out.println(book.toString());
+
+
     }
 
 
