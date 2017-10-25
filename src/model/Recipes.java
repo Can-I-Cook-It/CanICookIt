@@ -61,4 +61,40 @@ public class Recipes {
 
     }
 
+    public ArrayList<String> search(String[] ingToSearch){
+        ArrayList<String> ids = new ArrayList<>();
+        for(int i = 0; i < ingredients.size(); i++) {
+            int ingInCommon = 0;
+            String[] ings = ingredients.get(i);
+            for (int j = 0; j < ingToSearch.length; j++) {
+                if (!ings[1].contains(ingToSearch[j])){
+                    break;
+                }else{
+                    ingInCommon++;
+                }
+            }
+            if(ingInCommon > ingToSearch.length - 2){
+                ids.add(ings[0]);
+            }
+        }
+        return ids;
+    }
+
+    public ArrayList<String[]> getRecipes(ArrayList<String> recipesIds) {
+        ArrayList<String[]> recipes = new ArrayList<>();
+        for(String str : recipesIds){
+            recipes.add(this.recipes.get(Integer.parseInt(str)));
+        }
+        return recipes;
+    }
+
+    public String toString(ArrayList<String[]> recipes){
+        String out = "";
+        int c = 1;
+        for(String[] str : recipes){
+            out += String.format("%d -> %s%s%s\n--------NEXT-RECIPE--------\n", c, str[0], str[1], str[2]);
+            c++;
+        }
+        return out;
+    }
 }
