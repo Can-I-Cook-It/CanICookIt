@@ -38,7 +38,7 @@ public class Recipes {
         }
     }
 
-    public String toString(){//ola
+    public String toString(){
         String out = "";
         int c = 1;
         for(String[] str : recipes){
