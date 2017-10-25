@@ -23,14 +23,14 @@ public class Main {
         for(int i = 0; i < n; i++){
             System.out.print("Ingredient " +  i + ": ");
             ingToSearch[i] = input.nextLine();
-
         }
 
         ArrayList<String> matchingRecipesIds = book.search(ingToSearch);
         ArrayList<String[]> recipes = book.getRecipes(matchingRecipesIds);
 
         System.out.println(book.toString(recipes));
-        
+        System.out.println("NEW BRANCH");
+
 
     }
 
