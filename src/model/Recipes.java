@@ -27,30 +27,38 @@ public class Recipes {
         while(input.hasNextLine()){
             recipe += input.nextLine() + "\n";
         }
-        addRecipe(recipe);
+        addRecipes(recipe);
     }
 
-    public void addRecipe(String recipe){
-        String[] arr = new String[2];
-        String ingredients;
-        String[] r = recipe.split("---");
+    public void addRecipes(String recipe){
+        String[] r = recipe.split("###");
 
-        ingredients = r[1];
-        arr[0] = String.format("%d", id);
-        arr[1] = ingredients;
-
-        this.ingredients.add(arr);
-        recipes.add(r);
-        id++;
+        for(int i = 0; i < r.length; i++){
+            addRecipe(r[i]);
+        }
     }
 
     public String toString(){
         String out = "";
+        int c = 1;
         for(String[] str : recipes){
-            out += String.format("%s%s%s", str[0], str[1], str[2]);
+            out += String.format("%d -> %s%s%s\n--------NEXT-RECIPE--------\n", c, str[0], str[1], str[2]);
+            c++;
         }
         return out;
     }
 
+    public void addRecipe(String recipe){
+        String[] ing = new String[2];
+        String[] r = recipe.split("---");
+
+        ing[0] = String.format("%d", id);
+        ing[1] = r[1];
+
+        ingredients.add(ing);
+        recipes.add(r);
+        id++;
+
+    }
 
 }
