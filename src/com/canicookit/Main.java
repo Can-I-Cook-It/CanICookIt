@@ -30,6 +30,7 @@ public class Main {
         ArrayList<String[]> recipes = book.getRecipes(matchingRecipesIds);
 
         System.out.println(book.toString(recipes));
+        System.out.println("HEEEY");
 
     }
 
