@@ -1,5 +1,4 @@
 local composer = require( "composer" )
-local widget = require( "widget" )
 
 local scene = composer.newScene()
 
@@ -7,23 +6,7 @@ local scene = composer.newScene()
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
-local function onRowRender( event )
 
-    -- Get reference to the row group
-    local row = event.row
-
-    -- Cache the row "contentWidth" and "contentHeight" because the row bounds can change as children objects are added
-    local rowHeight = row.contentHeight
-    local rowWidth = row.contentWidth
-
-    local rowTitle = display.newText( row, "Row " .. row.index, 0, 0, nil, 14 )
-    rowTitle:setFillColor( 0 )
-
-    -- Align the label left and vertically centered
-    rowTitle.anchorX = 0
-    rowTitle.x = 0
-    rowTitle.y = rowHeight * 0.5
-end
 
 
 
@@ -36,33 +19,6 @@ function scene:create( event )
 
     local sceneGroup = self.view
     -- Code here runs when the scene is first created but has not yet appeared on screen
-
-    --Imagem Fundo
-    bg = display.newImage( "background.jpg" )
-    bg.x = display.contentCenterX
-    bg.y = display.contentCenterY
-    sceneGroup:insert(bg)
-
-    --Listar as receitas
-    local tableView = widget.newTableView(
-    {
-        left = 0,
-        top = 0,
-        height = display.contentHeight,
-        width = display.contentWidth,
-        onRowRender = onRowRender,
-        onRowTouch = onRowTouch,
-        listener = scrollListener
-    }
-)
-
--- Insert 40 rows
-for i = 1, 40 do
-    -- Insert a row into the tableView
-    tableView:insertRow{}
-end
-
-
 
 end
 
@@ -78,7 +34,7 @@ function scene:show( event )
 
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
-        print("Aqui")
+
     end
 end
 
