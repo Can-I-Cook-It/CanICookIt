@@ -1,5 +1,8 @@
 local composer = require( "composer" )
 local widget = require( "widget" )
+local sqlite3 = require "sqlite3"
+local path = system.pathForFile( "/db/database.db", system.ResourceDirectory )
+local db = sqlite3.open(path)
 
 local scene = composer.newScene()
 
@@ -7,16 +10,49 @@ local scene = composer.newScene()
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
+-- Table view listener
+local startXpos = 0 -- Position of finger when you first touch a row
+local startYpos = 0
+local buffer = 5 -- How much you can move your finger around but still be counted as selected
+local function tableViewListener(event)
+
+    local phase = event.phase
+    local row   = event.target
+
+    if phase == "began" and not row.selected then
+
+        startXpos = event.x
+        startYpos = event.y
+        row.selected = true
+
+    elseif phase == "ended" or phase == "moved" then
+
+        row.selected = false
+
+        if phase == "ended" and event.y < startYpos + buffer and event.y > startYpos - buffer and event.x < startXpos + buffer and event.x > startXpos - buffer then
+            composer.setVariable( "recipeID", row.index )
+            composer.setVariable( "dataBase", db )
+            composer.gotoScene("displayRecipe")
+
+        end
+
+    end
+
+end
+
 local function onRowRender( event )
 
     -- Get reference to the row group
     local row = event.row
+     local params = event.row.params
 
     -- Cache the row "contentWidth" and "contentHeight" because the row bounds can change as children objects are added
     local rowHeight = row.contentHeight
     local rowWidth = row.contentWidth
 
-    local rowTitle = display.newText( row, "Row " .. row.index, 0, 0, nil, 14 )
+
+
+    local rowTitle = display.newText( row, params.name, 0, 0, nil, 14 )
     rowTitle:setFillColor( 0 )
 
     -- Align the label left and vertically centered
@@ -52,14 +88,21 @@ function scene:create( event )
         width = display.contentWidth,
         onRowRender = onRowRender,
         onRowTouch = onRowTouch,
-        listener = scrollListener
+        listener    = tableViewListener
     }
 )
+sceneGroup:insert(tableView )
 
--- Insert 40 rows
-for i = 1, 40 do
+-- Insert Recipes
+  for row in db:nrows("SELECT * FROM Recipes") do
+
     -- Insert a row into the tableView
-    tableView:insertRow{}
+    tableView:insertRow{
+      params = {
+          name = row.name
+        }
+
+    }
 end
 
 
@@ -78,7 +121,7 @@ function scene:show( event )
 
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
-        print("Aqui")
+
     end
 end
 
