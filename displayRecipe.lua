@@ -21,8 +21,6 @@ function databaseGet()
     recipeName = row.name
     prepList= row.preparation
   end
-
-
 end
 
 
@@ -39,6 +37,11 @@ databaseGet()
   local sceneGroup = self.view
   -- Code here runs when the scene is first created but has not yet appeared on screen
 
+  --Imagem Fundo
+  local bg = display.newImage( "background.jpg" )
+  bg.x = display.contentCenterX
+  bg.y = display.contentCenterY
+  sceneGroup:insert(bg)
 
   --cria uma vista de scroll
   local scrollView = widget.newScrollView
@@ -49,19 +52,15 @@ databaseGet()
     height = display.contentHeight,
     scrollWidth = display.contentWidth,
     horizontalScrollDisabled = true,
-    listener = scrollListener
+    listener = scrollListener,
+    hideBackground = true
   }
 
-  --Imagem Fundo
-  local bg = display.newImage( "background.jpg" )
-  bg.x = display.contentCenterX
-  bg.y = display.contentCenterY
-  scrollView:insert(bg)
 
   --Imagem receita
   local recipeImage = display.newImageRect(imageFile, 200,200)
   recipeImage.x = display.contentCenterX
-  recipeImage.y = 135
+  recipeImage.y = 141
   scrollView:insert(recipeImage)
 
   --Titulo Receita
@@ -69,25 +68,43 @@ databaseGet()
     text = recipeName,
     x = display.contentCenterX,
     y = 15,
+    width = display.contentWidth,
     font = native.systemFontBold,
     fontSize = 24,
+    align = "center"
   }
   local titleBox = display.newText( titleOptions )
   titleBox:setFillColor( 0, 1, 0 )
   scrollView:insert(titleBox)
 
-  ---Ingredientes
-  local ingredientTitleBox = display.newText("Ingredientes", 80, 250, native.systemFontBold, 20 )
-  scrollView:insert(ingredientTitleBox)
+  --receita
 
-  local ingredientListBox =  display.newText(ingredientList, 130, 280, native.systemFont, 18 )
-  scrollView:insert(ingredientListBox)
+  local recipeText = "Ingredientes \n\n " .. ingredientList .. "\n\n" ..  "Preparação" .. "\n\n".. prepList
+  local textoptions ={
+    text = recipeText,
+    x = display.contentCenterX,
+    y = 750,
+    width = display.contentWidth,
+    font = native.systemFont,
+    fontSize = 15,
+    align = "left"
+  }
 
-  local preparationTitleBox = display.newText("Preparação", 80, 320, native.systemFontBold, 20 )
-  scrollView:insert(preparationTitleBox)
+local recipeTextBox =  display.newText(textoptions)
+scrollView:insert(recipeTextBox)
 
-  local preparationListBox =  display.newText(prepList, 130, 280, native.systemFont, 18 )
-  scrollView:insert(preparationListBox)
+  -- ---Ingredientes
+  -- local ingredientTitleBox = display.newText("Ingredientes", 80, 250, native.systemFontBold, 20 )
+  -- scrollView:insert(ingredientTitleBox)
+  --
+  -- local ingredientListBox =  display.newText(ingredientList, 130, 300, native.systemFont, 18 )
+  -- scrollView:insert(ingredientListBox)
+  --
+  -- local preparationTitleBox = display.newText("Preparação", 80, 320, native.systemFontBold, 20 )
+  -- scrollView:insert(preparationTitleBox)
+  --
+  -- local preparationListBox =  display.newText(prepList, 130, 280, native.systemFont, 18 )
+  -- scrollView:insert(preparationListBox)
 
 
   sceneGroup:insert(scrollView)
