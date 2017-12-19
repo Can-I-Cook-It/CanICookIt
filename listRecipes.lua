@@ -57,7 +57,7 @@ local function onRowRender( event )
 
     -- Align the label left and vertically centered
     rowTitle.anchorX = 0
-    rowTitle.x = 0
+    rowTitle.x = 10
     rowTitle.y = rowHeight * 0.5
 end
 
