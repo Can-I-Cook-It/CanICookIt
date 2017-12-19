@@ -14,7 +14,8 @@ local tableView
 local ingredients = {}
 
 local function searchRecipes()
-    print_r(ingredients)
+    composer.setVariable("ingredients", ingredients)
+    composer.gotoScene("listRecipesB")
 end
 
 function print_r(arr, indentLevel) --para "printar" os elementos de um array (table)
