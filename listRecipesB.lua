@@ -106,13 +106,25 @@ searchRecipesButton:addEventListener( "tap", nothing)
 
 	sqlQuery = string.sub(sqlQuery, 0, string.len(sqlQuery) - 22) .. ";"
 
+	local found = 0
+
 	for row in db:nrows(sqlQuery) do
 		tableView:insertRow{
       		params = {
           		name = row.Nome
         	}
     	}
+    	found = found + 1
     end
+
+    if found == 0 then
+    	tableView:insertRow{
+    		params = {
+    			name = "0 RECEITAS ENCONTRADAS"
+    	}
+    }
+end
+
 	print(sqlQuery)
 end
 
