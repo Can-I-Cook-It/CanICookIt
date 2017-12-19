@@ -8,4 +8,4 @@
 local composer = require "composer"
 
 
-composer.gotoScene( "listRecipes" )
+composer.gotoScene( "mainMenu" )
