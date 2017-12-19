@@ -11,15 +11,41 @@ local scene = composer.newScene()
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 local tableView
+local ingredients = {}
 
 local function searchRecipes()
-  print("Aqui")
+    print_r(ingredients)
+end
+
+function print_r(arr, indentLevel) --para "printar" os elementos de um array (table)
+    local str = ""
+    local indentStr = "#"
+
+    if(indentLevel == nil) then
+        print(print_r(arr, 0))
+        return
+    end
+
+    for i = 0, indentLevel do
+        indentStr = indentStr.."\t"
+    end
+
+    for index,value in pairs(arr) do
+        if type(value) == "table" then
+            str = str..indentStr..index..": \n"..print_r(value, (indentLevel + 1))
+        else 
+            str = str..indentStr..index..": "..value.."\n"
+        end
+    end
+    return str
 end
 
 
 local function onSwitchPress( event )
     local switch = event.target
     local thisRow = tableView:getRowAtIndex( switch.rowID )
+    print(tableView:getRowAtIndex(switch.rowID).params.name)
+    table.insert(ingredients, tableView:getRowAtIndex(switch.rowID).params.name)
 
 
     if switch.isOn == false then
@@ -106,7 +132,7 @@ function scene:create( event )
         top = 0,
         height = display.contentHeight,
         width = display.contentWidth,
-          onRowRender = onRowRender,
+        onRowRender = onRowRender,
         onRowTouch = onRowTouch,
         listener = tableViewListener
     }
