@@ -6,7 +6,7 @@ local db = sqlite3.open(path)
 
 local scene = composer.newScene()
 local ingredients = composer.getVariable( "ingredients" )
-local sqlQuery = "SELECT Nome FROM Receita WHERE Descrição LIKE "
+local sqlQuery = "SELECT Nome FROM Receita WHERE Descricao LIKE "
 
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
@@ -101,10 +101,10 @@ searchRecipesButton:addEventListener( "tap", nothing)
 	
 	
 	table.foreach(ingredients, function(key, value)
-		sqlQuery = sqlQuery .. "'%" .. value .. "%' AND Descrição LIKE "
+		sqlQuery = sqlQuery .. "'%" .. value .. "%' AND Descricao LIKE "
 	end)
 
-	sqlQuery = string.sub(sqlQuery, 0, string.len(sqlQuery) - 22) .. ";"
+	sqlQuery = string.sub(sqlQuery, 0, string.len(sqlQuery) - 20) .. ";"
 
 	local found = 0
 

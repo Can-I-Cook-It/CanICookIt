@@ -1,7 +1,7 @@
 local composer = require( "composer" )
 local widget = require( "widget" )
 local sqlite3 = require "sqlite3"
-local path = system.pathForFile( "/db/database.db", system.ResourceDirectory )
+local path = system.pathForFile( "/db/CICI", system.ResourceDirectory )
 local db = sqlite3.open(path)
 
 local scene = composer.newScene()
@@ -30,7 +30,7 @@ local function tableViewListener(event)
         row.selected = false
 
         if phase == "ended" and event.y < startYpos + buffer and event.y > startYpos - buffer and event.x < startXpos + buffer and event.x > startXpos - buffer then
-            composer.setVariable( "recipeID", row.index )
+            composer.setVariable( "ID", row.index )
             composer.setVariable( "dataBase", db )
             composer.gotoScene("displayRecipe")
 
@@ -94,12 +94,12 @@ function scene:create( event )
 sceneGroup:insert(tableView )
 
 -- Insert Recipes
-  for row in db:nrows("SELECT * FROM Recipes") do
+  for row in db:nrows("SELECT * FROM Receita") do
 
     -- Insert a row into the tableView
     tableView:insertRow{
       params = {
-          name = row.name
+          name = row.Nome
         }
 
     }

@@ -3,7 +3,7 @@ local widget = require("widget")
 local sqlite3 = require "sqlite3"
 
 local scene = composer.newScene()
-local id = composer.getVariable( "recipeID" )
+local id = composer.getVariable( "ID" )
 local db = composer.getVariable( "dataBase" )
 
 local imageFile = "db/images/" .. id .. ".jpg"
@@ -16,10 +16,10 @@ local prepList
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 function databaseGet()
-  for row in db:nrows("SELECT * FROM Recipes WHERE id=" .. id.. ";" ) do
-    ingredientList = row.ingredient
-    recipeName = row.name
-    prepList= row.preparation
+  for row in db:nrows("SELECT * FROM Receita WHERE ID=" .. id.. ";" ) do
+    ingredientList = row.Descricao
+    recipeName = row.Nome
+    prepList= row.Instrucoes
   end
 end
 
