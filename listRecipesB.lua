@@ -6,7 +6,7 @@ local db = sqlite3.open(path)
 
 local scene = composer.newScene()
 local ingredients = composer.getVariable( "ingredients" )
-local sqlQuery = "SELECT Nome FROM Receita WHERE Descricao LIKE "
+local sqlQuery = "SELECT Nome, ID FROM Receita WHERE Descricao LIKE "
 
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
@@ -15,8 +15,37 @@ local sqlQuery = "SELECT Nome FROM Receita WHERE Descricao LIKE "
 local tableView
 
 function nothing()
-	print("OLA")
-	-- body
+    -- body
+    print("OLA")
+end
+
+local startXpos = 0 -- Position of finger when you first touch a row
+local startYpos = 0
+local buffer = 5 -- How much you can move your finger around but still be counted as selected
+local function tableViewListener(event)
+
+    local phase = event.phase
+    local row   = event.target
+
+    if phase == "began" and not row.selected then
+
+        startXpos = event.x
+        startYpos = event.y
+        row.selected = true
+
+    elseif phase == "ended" or phase == "moved" then
+
+        row.selected = false
+
+        if phase == "ended" and event.y < startYpos + buffer and event.y > startYpos - buffer and event.x < startXpos + buffer and event.x > startXpos - buffer then
+            composer.setVariable( "ID", row.params.id )
+            composer.setVariable( "dataBase", db )
+            composer.gotoScene("displayRecipe")
+
+        end
+
+    end
+
 end
 
 local function onRowRender( event )
@@ -30,30 +59,7 @@ local function onRowRender( event )
     local rowWidth = row.contentWidth
 
     -- create checkbox
-    local checkboxButton = widget.newSwitch(
-    {
-        style = "checkbox",
-        id = "Checkbox",
-        onPress = onSwitchPress
-    }
-    )
-    checkboxButton.anchorX = 0
-    checkboxButton.x = 0
-    checkboxButton.y = rowHeight * 0.5
-
-
-
-    --estado botao
-    checkboxButton.rowID = row.id
-    checkboxButton.isOn = row.params.isSwitchOn
-
-    if ( row.params.isSwitchOn == true ) then
-      checkboxButton:setState( { isOn=true } )
-    else
-      checkboxButton:setState( { isOn=false } )
-    end
-
-    row:insert(checkboxButton)
+    
     --texto ingrediente
 
     local rowTitle = display.newText( row, params.name, 0, 0, nil, 14 )
@@ -62,7 +68,7 @@ local function onRowRender( event )
     -- Align the label left and vertically centered
 
     rowTitle.anchorX = 0
-    rowTitle.x = 40
+    rowTitle.x = 10
     rowTitle.y = rowHeight * 0.5
 
 
@@ -111,7 +117,8 @@ searchRecipesButton:addEventListener( "tap", nothing)
 	for row in db:nrows(sqlQuery) do
 		tableView:insertRow{
       		params = {
-          		name = row.Nome
+          		name = row.Nome,
+                id = row.ID
         	}
     	}
     	found = found + 1
