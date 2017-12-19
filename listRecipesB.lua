@@ -6,6 +6,7 @@ local db = sqlite3.open(path)
 
 local scene = composer.newScene()
 local ingredients = composer.getVariable( "ingredients" )
+local sqlQuery = "SELECT Nome FROM Receita WHERE Descrição LIKE "
 
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
@@ -16,6 +17,55 @@ local tableView
 function nothing()
 	print("OLA")
 	-- body
+end
+
+local function onRowRender( event )
+
+    -- Get reference to the row group
+    local row = event.row
+    local params = event.row.params
+
+    -- Cache the row "contentWidth" and "contentHeight" because the row bounds can change as children objects are added
+    local rowHeight = row.contentHeight
+    local rowWidth = row.contentWidth
+
+    -- create checkbox
+    local checkboxButton = widget.newSwitch(
+    {
+        style = "checkbox",
+        id = "Checkbox",
+        onPress = onSwitchPress
+    }
+    )
+    checkboxButton.anchorX = 0
+    checkboxButton.x = 0
+    checkboxButton.y = rowHeight * 0.5
+
+
+
+    --estado botao
+    checkboxButton.rowID = row.id
+    checkboxButton.isOn = row.params.isSwitchOn
+
+    if ( row.params.isSwitchOn == true ) then
+      checkboxButton:setState( { isOn=true } )
+    else
+      checkboxButton:setState( { isOn=false } )
+    end
+
+    row:insert(checkboxButton)
+    --texto ingrediente
+
+    local rowTitle = display.newText( row, params.name, 0, 0, nil, 14 )
+    rowTitle:setFillColor( 0 )
+
+    -- Align the label left and vertically centered
+
+    rowTitle.anchorX = 0
+    rowTitle.x = 40
+    rowTitle.y = rowHeight * 0.5
+
+
 end
 
 function scene:create( event )
@@ -48,15 +98,24 @@ sceneGroup:insert(searchRecipesButton)
 searchRecipesButton:addEventListener( "tap", nothing)
 
 
+	
+	
 	table.foreach(ingredients, function(key, value)
-		tableView:insertRow{
-			params = {
-				name = value
-			}
-		}
+		sqlQuery = sqlQuery .. "'%" .. value .. "%' AND Descrição LIKE "
 	end)
 
+	sqlQuery = string.sub(sqlQuery, 0, string.len(sqlQuery) - 22) .. ";"
+
+	for row in db:nrows(sqlQuery) do
+		tableView:insertRow{
+      		params = {
+          		name = row.Nome
+        	}
+    	}
+    end
+	print(sqlQuery)
 end
+
 
 
 -- show()

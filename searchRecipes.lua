@@ -39,20 +39,22 @@ function print_r(arr, indentLevel) --para "printar" os elementos de um array (ta
         end
     end
     return str
-end
+end 
 
 
 local function onSwitchPress( event )
     local switch = event.target
     local thisRow = tableView:getRowAtIndex( switch.rowID )
     print(tableView:getRowAtIndex(switch.rowID).params.name)
-    table.insert(ingredients, tableView:getRowAtIndex(switch.rowID).params.name)
+    
 
 
     if switch.isOn == false then
         thisRow.params.isSwitchOn = false
+        table.remove(ingredients, 1)
     else
         thisRow.params.isSwitchOn = true
+        table.insert(ingredients, tableView:getRowAtIndex(switch.rowID).params.name)
     end
 
     -- print (thisRow.params.isSwitchOn)
