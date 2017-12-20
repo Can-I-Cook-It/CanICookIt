@@ -28,8 +28,10 @@ local ingredients = {}
 --Handles the press of the Button
 local function listRecipes( event  )
   if ( "ended" == event.phase ) then
-    composer.setVariable("ingredients", ingredients)
-    composer.gotoScene("listRecipesB")
+    if ( #ingredients ~= 0 ) then
+      composer.setVariable("ingredients", ingredients)
+      composer.gotoScene("listRecipesB")
+    end
   end
 end
 
