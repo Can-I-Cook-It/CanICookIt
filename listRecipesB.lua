@@ -1,7 +1,7 @@
 local composer = require( "composer" )
 local widget = require( "widget" )
 local sqlite3 = require "sqlite3"
-local path = system.pathForFile( "/db/CICI", system.ResourceDirectory )
+local path = system.pathForFile( "CICI", system.ResourceDirectory ) 
 local db = sqlite3.open(path)
 
 local scene = composer.newScene()
@@ -84,7 +84,7 @@ function scene:create( event )
     bg.y = display.contentCenterY
     sceneGroup:insert(bg)
 
-    --Listar as receitas
+    --List recipes
     tableView = widget.newTableView(
     {
         left = 0,
@@ -98,14 +98,11 @@ function scene:create( event )
 )
 sceneGroup:insert(tableView)
 
-searchRecipesButton = display.newRect(display.contentWidth * 0.8 , display.contentHeight * 0.9, display.contentWidth * 0.3, display.contentHeight * 0.1 )
-searchRecipesButton:setFillColor(0,0,1)
-sceneGroup:insert(searchRecipesButton)
-searchRecipesButton:addEventListener( "tap", nothing)
+
 
 
 	
-	
+	--Create SQL Query to show recipes with selected ingredient(s)
 	table.foreach(ingredients, function(key, value)
 		sqlQuery = sqlQuery .. "'%" .. value .. "%' AND Descricao LIKE "
 	end)
@@ -114,6 +111,7 @@ searchRecipesButton:addEventListener( "tap", nothing)
 
 	local found = 0
 
+    --Populate rows
 	for row in db:nrows(sqlQuery) do
 		tableView:insertRow{
       		params = {
@@ -124,13 +122,14 @@ searchRecipesButton:addEventListener( "tap", nothing)
     	found = found + 1
     end
 
+    --If no recipe is found
     if found == 0 then
     	tableView:insertRow{
     		params = {
     			name = "0 RECEITAS ENCONTRADAS"
     	}
     }
-end
+    end
 
 	print(sqlQuery)
 end
