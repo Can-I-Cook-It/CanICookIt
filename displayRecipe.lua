@@ -16,6 +16,20 @@ local prepList
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 
+-- Key listener for back Button
+  local function onKeyEvent( event )
+      local phase = event.phase
+      local keyName = event.keyName
+
+
+      if(keyName=="back") then
+      composer.removeScene("displayRecipe")
+      composer.gotoScene( "mainMenu" )
+      end
+      return true
+   end
+ Runtime:addEventListener( "key", onKeyEvent );
+
 --Get DB data
 function databaseGet()
   for row in db:nrows("SELECT * FROM Receita WHERE ID=" .. id.. ";" ) do

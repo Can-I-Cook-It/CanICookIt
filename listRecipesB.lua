@@ -14,6 +14,21 @@ local tableView
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 
+-- Key listener for back Button
+  local function onKeyEvent( event )
+      local phase = event.phase
+      local keyName = event.keyName
+
+
+      if(keyName=="back") then
+      composer.removeScene("listRecipesB")
+      composer.gotoScene( "mainMenu" )
+      end
+      return true
+   end
+ Runtime:addEventListener( "key", onKeyEvent );
+
+
 local startXpos = 0 -- Position of finger when you first touch a row
 local startYpos = 0
 local buffer = 5 -- How much you can move your finger around but still be counted as selected
@@ -77,7 +92,7 @@ function scene:create( event )
   bg.x = display.contentCenterX
   bg.y = display.contentCenterY
   sceneGroup:insert(bg)
-  
+
   --List recipes
   tableView = widget.newTableView(
   {
@@ -137,7 +152,7 @@ if found == 0 then
   }
   local titleBox = display.newText( titleOptions )
   titleBox:setFillColor( 0, 1, 0 )
-  scrollView:insert(titleBox)
+  sceneGroup:insert(titleBox)
 end
 end
 

@@ -11,6 +11,19 @@ local ingredients = {}
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
+-- Key listener for back Button
+  local function onKeyEvent( event )
+      local phase = event.phase
+      local keyName = event.keyName
+
+
+      if(keyName=="back") then
+      composer.gotoScene( "mainMenu" )
+
+      end
+      return true
+   end
+ Runtime:addEventListener( "key", onKeyEvent );
 
 --Handles the press of the Button
 local function listRecipes( event  )

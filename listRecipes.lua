@@ -5,10 +5,24 @@ local path = system.pathForFile( "CICI", system.ResourceDirectory )
 local db = sqlite3.open(path)
 local scene = composer.newScene()
 
+
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
+
+  -- Key listener for back Button
+    local function onKeyEvent( event )
+        local phase = event.phase
+        local keyName = event.keyName
+
+
+        if(keyName=="back") then
+        composer.gotoScene( "mainMenu" )
+        end
+        return true
+     end
+   Runtime:addEventListener( "key", onKeyEvent );
 
 -- Table view listener
 local startXpos = 0 -- Position of finger when you first touch a row
@@ -112,6 +126,20 @@ function scene:show( event )
 
   elseif ( phase == "did" ) then
     -- Code here runs when the scene is entirely on screen
+    -- Called when a key event has been received
+    local function onKeyEvent( event )
+        if (system.getInfo("platformName") == "Android") then
+           if (event.keyName == "back") and (event.phase == "down") then
+
+              composer.gotoScene( "mainMenu" )
+                return true
+           end
+        end
+        return false
+    end
+
+    -- Add the key event listener
+    Runtime:addEventListener( "key", onKeyEvent )
 
   end
 end
