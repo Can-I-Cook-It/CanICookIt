@@ -1,9 +1,8 @@
 local composer = require( "composer" )
 local widget = require( "widget" )
 local sqlite3 = require "sqlite3"
-local path = system.pathForFile( "/db/CICI", system.ResourceDirectory )
+local path = system.pathForFile( "CICI", system.ResourceDirectory )
 local db = sqlite3.open(path)
-
 local scene = composer.newScene()
 
 -- -----------------------------------------------------------------------------------
@@ -35,11 +34,10 @@ local function tableViewListener(event)
             composer.gotoScene("displayRecipe")
 
         end
-
     end
-
 end
 
+--Render a line with DB data
 local function onRowRender( event )
 
     -- Get reference to the row group
@@ -50,8 +48,7 @@ local function onRowRender( event )
     local rowHeight = row.contentHeight
     local rowWidth = row.contentWidth
 
-
-
+--Recipe Name
     local rowTitle = display.newText( row, params.name, 0, 0, nil, 14 )
     rowTitle:setFillColor( 0 )
 
@@ -60,8 +57,6 @@ local function onRowRender( event )
     rowTitle.x = 10
     rowTitle.y = rowHeight * 0.5
 end
-
-
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -73,13 +68,13 @@ function scene:create( event )
     local sceneGroup = self.view
     -- Code here runs when the scene is first created but has not yet appeared on screen
 
-    --Imagem Fundo
+    --Background Image
     bg = display.newImage( "background.jpg" )
     bg.x = display.contentCenterX
     bg.y = display.contentCenterY
     sceneGroup:insert(bg)
 
-    --Listar as receitas
+    --Create a table with the ingredients
     local tableView = widget.newTableView(
     {
         left = 0,
@@ -101,14 +96,9 @@ sceneGroup:insert(tableView )
       params = {
           name = row.Nome
         }
-
     }
 end
-
-
-
 end
-
 
 -- show()
 function scene:show( event )
