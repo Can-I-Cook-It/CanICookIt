@@ -152,7 +152,9 @@ if found == 0 then
   }
   local titleBox = display.newText( titleOptions )
   titleBox:setFillColor( 0, 1, 0 )
+  sceneGroup:insert(scrollView)
   sceneGroup:insert(titleBox)
+
 end
 end
 
