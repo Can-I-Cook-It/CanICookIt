@@ -114,11 +114,30 @@ end
 
 --If no recipe is found
 if found == 0 then
-  tableView:insertRow{
-    params = {
-      name = "0 RECEITAS ENCONTRADAS"
-    }
+  tableView.destroy = true
+  local scrollView = widget.newScrollView
+  {
+    top = 0,
+    left = 0,
+    width = display.contentWidth,
+    height = display.contentHeight,
+    scrollWidth = display.contentWidth,
+    horizontalScrollDisabled = true,
+    listener = scrollListener,
+    hideBackground = true
   }
+  local titleOptions = {
+    text = "0 RECEITAS ENCONTRADAS",
+    x = display.contentCenterX,
+    y = 15,
+    width = display.contentWidth,
+    font = native.systemFontBold,
+    fontSize = 15,
+    align = "center"
+  }
+  local titleBox = display.newText( titleOptions )
+  titleBox:setFillColor( 0, 1, 0 )
+  scrollView:insert(titleBox)
 end
 end
 
