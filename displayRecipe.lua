@@ -83,12 +83,19 @@ databaseGet()
   local textoptions ={
     text = recipeText,
     x = display.contentCenterX,
-    y = 750,
     width = display.contentWidth,
     font = native.systemFont,
     fontSize = 15,
     align = "left"
   }
+  local len = string.len(recipeText)
+  if len < 600 then
+    textoptions.y = 440
+  elseif len < 800 then
+    textoptions.y = 550
+  else
+    textoptions.y = 770
+  end
 
 local recipeTextBox =  display.newText(textoptions)
 scrollView:insert(recipeTextBox)
