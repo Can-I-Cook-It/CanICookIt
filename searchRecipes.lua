@@ -28,7 +28,7 @@ local ingredients = {}
 --Handles the press of the Button
 local function listRecipes( event  )
   if ( "ended" == event.phase ) then
-    if ( #ingredients ~= 0 ) then
+    if ( #ingredients ~= 0 ) then --if no ingredient is selected do nothing when button press (#table -> table size)
       composer.setVariable("ingredients", ingredients)
       composer.gotoScene("listRecipesB")
     end
