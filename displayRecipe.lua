@@ -15,6 +15,8 @@ local prepList
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
+
+--Get DB data
 function databaseGet()
   for row in db:nrows("SELECT * FROM Receita WHERE ID=" .. id.. ";" ) do
     ingredientList = row.Descricao
@@ -23,27 +25,25 @@ function databaseGet()
   end
 end
 
-
-
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
 
 -- create()
 function scene:create( event )
-databaseGet()
 
+  databaseGet()
 
   local sceneGroup = self.view
   -- Code here runs when the scene is first created but has not yet appeared on screen
 
-  --Imagem Fundo
+  --Background Image
   local bg = display.newImage( "background.jpg" )
   bg.x = display.contentCenterX
   bg.y = display.contentCenterY
   sceneGroup:insert(bg)
 
-  --cria uma vista de scroll
+  --Creates a ScrollView
   local scrollView = widget.newScrollView
   {
     top = 0,
@@ -56,14 +56,13 @@ databaseGet()
     hideBackground = true
   }
 
-
-  --Imagem receita
+  --Recipe Image
   local recipeImage = display.newImageRect(imageFile, 200,200)
   recipeImage.x = display.contentCenterX
   recipeImage.y = 141
   scrollView:insert(recipeImage)
 
-  --Titulo Receita
+  --Recipe Title
   local titleOptions = {
     text = recipeName,
     x = display.contentCenterX,
@@ -77,8 +76,7 @@ databaseGet()
   titleBox:setFillColor( 0, 1, 0 )
   scrollView:insert(titleBox)
 
-  --receita
-
+  --Recipe Text
   local recipeText = "Ingredientes \n\n " .. ingredientList .. "\n\n" ..  "Preparação" .. "\n\n".. prepList
   local textoptions ={
     text = recipeText,
@@ -97,26 +95,11 @@ databaseGet()
     textoptions.y = 770
   end
 
-local recipeTextBox =  display.newText(textoptions)
-scrollView:insert(recipeTextBox)
-
-  -- ---Ingredientes
-  -- local ingredientTitleBox = display.newText("Ingredientes", 80, 250, native.systemFontBold, 20 )
-  -- scrollView:insert(ingredientTitleBox)
-  --
-  -- local ingredientListBox =  display.newText(ingredientList, 130, 300, native.systemFont, 18 )
-  -- scrollView:insert(ingredientListBox)
-  --
-  -- local preparationTitleBox = display.newText("Preparação", 80, 320, native.systemFontBold, 20 )
-  -- scrollView:insert(preparationTitleBox)
-  --
-  -- local preparationListBox =  display.newText(prepList, 130, 280, native.systemFont, 18 )
-  -- scrollView:insert(preparationListBox)
-
+  local recipeTextBox =  display.newText(textoptions)
+  scrollView:insert(recipeTextBox)
 
   sceneGroup:insert(scrollView)
 end
-
 
 -- show()
 function scene:show( event )

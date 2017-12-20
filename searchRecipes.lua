@@ -88,7 +88,7 @@ function scene:create( event )
   -- Code here runs when the scene is first created but has not yet appeared on screen
 
   --Background Image
-  bg = display.newImage( "background.jpg" )
+  bg = display.newImage( "background1.jpg" )
   bg.x = display.contentCenterX
   bg.y = display.contentCenterY
   sceneGroup:insert(bg)

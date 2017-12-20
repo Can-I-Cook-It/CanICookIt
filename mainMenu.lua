@@ -12,7 +12,6 @@ local bg
 -- -----------------------------------------------------------------------------------
 
 -- Button event handler
-
 local function listRecipes( event  )
   if ( "ended" == event.phase ) then
     composer.gotoScene( "listRecipes" )

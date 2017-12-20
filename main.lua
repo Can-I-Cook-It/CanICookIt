@@ -1,11 +1,4 @@
------------------------------------------------------------------------------------------
---
--- main.lua
---
------------------------------------------------------------------------------------------
-
--- Your code here
 local composer = require "composer"
 
-
+--Go directly to custom main menu  
 composer.gotoScene( "mainMenu" )
